@@ -2,37 +2,37 @@ import clientPromise from '@/lib/mongodb';
 
 export async function POST(request) {
     try {
-      const body = await request.json();
-      const client = await clientPromise;
-      const db = client.db("linkhub");
-      const collection = db.collection("links");
+        const body = await request.json();
+        const client = await clientPromise;
+        const db = client.db("linkhub");
+        const collection = db.collection("links");
+        
+        // Create an index for `handle` if not already done (run in MongoDB shell)
+        // db.links.createIndex({ handle: 1 });
 
-      // Ensure 'handle' is indexed for faster querying
-      await collection.createIndex({ handle: 1 });
-
-      const doc = await collection.findOne({ handle: body.handle });
-
-      if (doc) {
+        console.time('findOne-time');
+        const doc = await collection.findOne({ handle: body.handle }, { projection: { _id: 0, handle: 1 } });
+        console.timeEnd('findOne-time');
+        
+        if (doc) {
+            return Response.json({ success: false, error: true, message: "Handle already exists" });
+        }
+        
+        console.time('insert-time');
+        const result = await collection.insertOne(body);
+        console.timeEnd('insert-time');
+        
         return new Response(JSON.stringify({
-          success: false,
-          error: true,
-          message: "Handle already exists"
-        }), { status: 400 });
-      }
-
-      const result = await collection.insertOne(body);
-
-      return new Response(JSON.stringify({
-        success: true,
-        message: "Link added successfully!"
-      }), { status: 200 });
-
+            success: true,
+            message: "Link added successfully!",
+            result: result
+        }), { status: 200 });
     } catch (error) {
-      console.error("Database error:", error); // Log error for debugging
-      return new Response(JSON.stringify({
-        success: false,
-        message: "Database error",
-        error: error.message
-      }), { status: 500 });
+        console.error('Database error:', error);
+        return new Response(JSON.stringify({
+            success: false,
+            message: "Database error",
+            error: error.message
+        }), { status: 500 });
     }
 }
