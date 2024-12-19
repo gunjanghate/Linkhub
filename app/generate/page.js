@@ -36,39 +36,46 @@ const GeneratePageContent = () => {
     e.preventDefault();
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-
+  
     const raw = JSON.stringify({
       links: links,
       handle: handle,
       pic: pic,
       bio: bio,
     });
-
+  
     const requestOptions = {
       method: "POST",
       headers: myHeaders,
       body: raw,
       redirect: "follow",
     };
-
+  
     try {
       const r = await fetch("/api/add", requestOptions);
-      const result = await r.json();
-      if (result.success) {
-        toast.success(result.message);
-        setLinks([{ link: "", linktext: "" }]);
-        setHandle("");
-        setPic("");
-        setBio("");
-      } else {
-        toast.error("Handle Already Exists!");
+      const textResponse = await r.text();  // Get raw response as text
+      try {
+        const result = JSON.parse(textResponse);  // Try parsing as JSON
+        if (result.success) {
+          toast.success(result.message);
+          setLinks([{ link: "", linktext: "" }]);
+          setHandle("");
+          setPic("");
+          setBio("");
+        } else {
+          toast.error("Handle Already Exists!");
+        }
+      } catch (error) {
+        // If JSON parsing fails, log and show the raw response
+        console.error("Invalid JSON response:", textResponse);
+        toast.error("Error: " + textResponse);  // Display the raw error message
       }
     } catch (error) {
       toast.error("Error submitting links");
       console.error("Error:", error);
-      console.log("Error:", error);
     }
   };
+  
 
   return (
     <div>
