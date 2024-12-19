@@ -52,7 +52,7 @@ const GeneratePageContent = () => {
     };
   
     try {
-      const r = await fetch("https://linkhub-kohl.vercel.app/api/add", requestOptions);
+      const r = await fetch("https://linkhub-gg.netlify.app/api/add", requestOptions);
       const textResponse = await r.text();  // Get raw response as text
       try {
         const result = JSON.parse(textResponse);  // Try parsing as JSON
