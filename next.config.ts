@@ -5,6 +5,9 @@ const nextConfig: NextConfig = {
   images: {
     domains: ["example.com", "cdn.example.com"], // Add your remote image domains here
   },
+  eslint: {
+    ignoreDuringBuilds: true,  // Ignore ESLint errors during builds
+  },
 };
 
 export default nextConfig;

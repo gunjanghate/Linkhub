@@ -70,10 +70,10 @@ const GeneratePageContent = () => {
         console.error("Invalid JSON response:", textResponse);
         toast.error("Error: " + textResponse);  // Display the raw error message
       }
-    } catch (error) {
+    } catch {
       toast.error("Error submitting links");
-      console.error("Error:", error);
     }
+    
   };
   
 
