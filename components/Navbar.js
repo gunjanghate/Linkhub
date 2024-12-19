@@ -2,9 +2,11 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
 const Navbar = () => {
   const pathname = usePathname();
   const showNavbar = ["/", "/generate"].includes(pathname);
+
   return (
     <>
       {showNavbar && (
@@ -12,13 +14,13 @@ const Navbar = () => {
           <div className="logo text-3xl font-bold">Linkhub</div>
           <ul className="flex gap-5 items-center justify-center">
             <li>
-              <a href="/">Home</a>
+              <Link href="/">Home</Link>
             </li>
             <li>
-              <a href="/about">About</a>
+              <Link href="/about">About</Link>
             </li>
             <li>
-              <a href="/contact">Contact</a>
+              <Link href="/contact">Contact</Link>
             </li>
           </ul>
 
