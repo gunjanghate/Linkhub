@@ -1,23 +1,51 @@
-import clientPromise from '@/lib/mongodb';
+import { MongoClient } from 'mongodb';
 import { NextResponse } from 'next/server';
+
+const uri = "mongodb+srv://ghategunjan:gg1234@cluster0.amdi9.mongodb.net/";
+
+let cachedClient = null;
+let cachedClientPromise = null;
+
+// MongoDB connection function
+async function connectToDatabase() {
+  if (!cachedClientPromise) {
+    const client = new MongoClient(uri);
+    cachedClientPromise = client.connect();
+    cachedClient = client;
+  }
+  return cachedClientPromise;
+}
 
 export async function POST(request) {
   try {
     const body = await request.json();
-    const client = await clientPromise;
-    const db = client.db("linkhub");
-    const collection = db.collection("links");
+
+    // Check if data is valid
+    if (!body.handle) {
+      return NextResponse.json({
+        success: false,
+        message: "Handle is required"
+      }, { status: 400 });
+    }
+
+    await connectToDatabase();
+    const database = cachedClient.db('linkhub');
+    const collection = database.collection('links');
 
     // Check if handle already exists
     const doc = await collection.findOne({ handle: body.handle }, { projection: { _id: 0, handle: 1 } });
     if (doc) {
-      return NextResponse.json({ success: false, error: true, message: "Handle already exists" }, { status: 200 });
+      return NextResponse.json({
+        success: false,
+        error: true,
+        message: "Handle already exists"
+      }, { status: 400 });
     }
 
     // Insert new record
     const result = await collection.insertOne(body);
 
-    // Construct the response
+    // Construct response
     const response = {
       success: true,
       message: "Link added successfully!",
@@ -26,11 +54,11 @@ export async function POST(request) {
 
     console.log("Response:", response);
 
-    // Return the response
     return NextResponse.json(response, { status: 200 });
 
   } catch (error) {
     console.error('Database error:', error);
+
     return NextResponse.json({
       success: false,
       message: "Database error",
