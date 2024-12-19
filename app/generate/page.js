@@ -53,7 +53,7 @@ const GeneratePageContent = () => {
   
     try {
       console.log("Submitting links with requestOptions:", requestOptions);
-      const response = await fetch("https://linkhub-gg.netlify.app/api/add", requestOptions);
+      const response = await fetch("/api/add", requestOptions);
       
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
