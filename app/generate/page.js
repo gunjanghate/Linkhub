@@ -63,6 +63,7 @@ const GeneratePageContent = () => {
           setPic("");
           setBio("");
         } else {
+          console.log(result.message);
           toast.error("Handle Already Exists!");
         }
       } catch (error) {
