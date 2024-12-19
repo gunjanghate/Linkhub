@@ -66,6 +66,7 @@ const GeneratePageContent = () => {
     } catch (error) {
       toast.error("Error submitting links");
       console.error("Error:", error);
+      console.log("Error:", error);
     }
   };
 
