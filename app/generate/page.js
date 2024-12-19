@@ -52,28 +52,39 @@ const GeneratePageContent = () => {
     };
   
     try {
+      console.log("Submitting links with requestOptions:", requestOptions);
       const response = await fetch("https://linkhub-gg.netlify.app/api/add", requestOptions);
-      const textResponse = await response.text();
-      if (textResponse.trim() === "") {
-          toast.error("Empty response from server");
-          return;
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      const result = JSON.parse(textResponse);
-      if (result.success) {
-          toast.success(result.message);
-          setLinks([{ link: "", linktext: "" }]);
-          setHandle("");
-          setPic("");
-          setBio("");
-      } else {
-          toast.error(result.message);
-      }
-  } catch (error) {
-      toast.error("Error submitting links: " + error.message);
-  }
   
-    
+      const textResponse = await response.text();
+      if (textResponse) {
+        try {
+          const result = JSON.parse(textResponse);
+          if (result.success) {
+            toast.success(result.message);
+            setLinks([{ link: "", linktext: "" }]);
+            setHandle("");
+            setPic("");
+            setBio("");
+          } else {
+            toast.error(result.message);
+          }
+        } catch (error) {
+          console.error("Invalid JSON response:", textResponse);
+          toast.error("Error: " + textResponse);
+        }
+      } else {
+        toast.error("No response from server");
+      }
+    } catch (error) {
+      console.error("Error submitting links:", error);
+      toast.error("Error submitting links: " + error.message);
+    }
   };
+  
   
 
   return (
