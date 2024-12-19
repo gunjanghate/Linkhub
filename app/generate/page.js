@@ -52,28 +52,26 @@ const GeneratePageContent = () => {
     };
   
     try {
-      const r = await fetch("https://linkhub-gg.netlify.app/api/add", requestOptions);
-      const textResponse = await r.text();  // Get raw response as text
-      try {
-        const result = JSON.parse(textResponse);  // Try parsing as JSON
-        if (result.success) {
+      const response = await fetch("https://linkhub-gg.netlify.app/api/add", requestOptions);
+      const textResponse = await response.text();
+      if (textResponse.trim() === "") {
+          toast.error("Empty response from server");
+          return;
+      }
+      const result = JSON.parse(textResponse);
+      if (result.success) {
           toast.success(result.message);
           setLinks([{ link: "", linktext: "" }]);
           setHandle("");
           setPic("");
           setBio("");
-        } else {
-          console.log(result.message);
-          toast.error("Handle Already Exists!");
-        }
-      } catch (error) {
-        // If JSON parsing fails, log and show the raw response
-        console.error("Invalid JSON response:", textResponse);
-        toast.error("Error: " + textResponse);  // Display the raw error message
+      } else {
+          toast.error(result.message);
       }
-    } catch {
-      toast.error("Error submitting links");
-    }
+  } catch (error) {
+      toast.error("Error submitting links: " + error.message);
+  }
+  
     
   };
   
