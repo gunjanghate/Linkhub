@@ -22,9 +22,9 @@ export default async function Page({ params }) {
   <Image
     src={items.pic}
     alt="profile-image"
-    className="rounded-full"
-    width={200}
-    height={200}
+    className="rounded-full h-96 w-96"
+    width={100}
+    height={100}
     objectFit="cover"
     priority={true}
   />
