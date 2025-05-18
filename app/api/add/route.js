@@ -1,7 +1,7 @@
 // import { MongoClient } from 'mongodb';
 // import { NextResponse } from 'next/server';
 
-// const uri = "mongodb+srv://ghategunjan:111005@cluster0.amdi9.mongodb.net/";
+// const uri = "";
 // console.log("Mongodb : ",uri);
 
 // // let cachedClient = null;
