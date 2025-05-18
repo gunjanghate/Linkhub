@@ -18,15 +18,21 @@ export default async function Page({ params }) {
     <div className="main flex min-h-screen justify-center items-center flex-col bg-purple-400">
       <div className="photo flex flex-col gap-5 justify-center items-center my-12">
       
-        <Image
-          src={items.pic}
-          alt="profile-image"
-          className="rounded-full"
-          width={200}
-          height={200}
-          objectFit="cover" 
-          priority={true} 
-        />
+{items.pic && items.pic.startsWith("http") ? (
+  <Image
+    src={items.pic}
+    alt="profile-image"
+    className="rounded-full"
+    width={200}
+    height={200}
+    objectFit="cover"
+    priority={true}
+  />
+) : (
+  <div className="w-[200px] h-[200px] rounded-full bg-gray-200 flex items-center justify-center">
+    <span className="text-sm text-gray-500">No Image</span>
+  </div>
+)}
         <span className="font-bold text-3xl">{handle}</span>
         <span className="bio w-80 text-center">{items.bio}</span>
         <div className="links flex flex-col gap-3">

@@ -6,7 +6,6 @@ import tree from "@/public/assests/image.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-// GeneratePageContent component that handles search params
 const GeneratePageContent = () => {
   const searchParams = useSearchParams();
   const [handle, setHandle] = useState("");
@@ -27,7 +26,7 @@ const GeneratePageContent = () => {
     );
   };
 
-  const addLink = (e) => {
+  const addLink = (e) => { 
     e.preventDefault();
     setLinks([...links, { link: "", linktext: "" }]);
   };

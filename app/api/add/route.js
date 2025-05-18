@@ -1,7 +1,8 @@
 import { MongoClient } from 'mongodb';
 import { NextResponse } from 'next/server';
 
-const uri = "mongodb+srv://ghategunjan:gg1234@cluster0.amdi9.mongodb.net/";
+const uri = process.env.MONGODB_URI;
+console.log(uri);
 
 let cachedClient = null;
 let cachedClientPromise = null;

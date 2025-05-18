@@ -7,6 +7,7 @@ export default function Home() {
   const router = useRouter();
   const [text, settext] = useState("");
   const createTree = () => {
+    
     router.push(`/generate?handle=${text}`);
   };
 
@@ -15,9 +16,9 @@ export default function Home() {
       {/* <Navbar/> */}
       <section className="bg-green-800 min-h-[100vh] grid grid-cols-2">
         <div className="col-1 flex flex-col ml-[10vw] justify-center items-center gap-12">
-          <div className="texts">
-            <p className="text-2xl font-medium">Hello All! Welcome to</p>
-            <p className="text-3xl font-extrabold">Linkhub</p>
+          <div className="texts w-96">
+            
+            <p className="text-5xl text-amber-300 font-extrabold">Everything you are. In one, simple link in bio.</p>
           </div>
           <div className="buttons flex gap-2">
             <input
